@@ -9,7 +9,7 @@ body {
 #player {
 	width: 560px;
 	height: 410px;
-	background-color: #000;
+	background-color: #666666;
 }
 
 #errorBox {
@@ -89,12 +89,8 @@ body {
 	margin-bottom: 5px;
 }
 
-.playlistItemHover {
-	height: 21px;
-	width: 100px;
-	float: right;
-	border: 1px;
-	border-style: dotted;
+.playlistItem:hover {
+	background-color: #2B262F;
 }
 
 #sync {

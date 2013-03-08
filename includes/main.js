@@ -17,6 +17,25 @@ function getVLC(name) {
 	}
 }
 
+function formatTime(timeVal) {
+	if ( typeof timeVal != 'number')
+		return "-:--:--";
+
+	var timeHour = Math.round(timeVal / 1000);
+	var timeSec = timeHour % 60;
+	if (timeSec < 10)
+		timeSec = '0' + timeSec;
+	timeHour = (timeHour - timeSec) / 60;
+	var timeMin = timeHour % 60;
+	if (timeMin < 10)
+		timeMin = '0' + timeMin;
+	timeHour = (timeHour - timeMin) / 60;
+	if (timeHour > 0)
+		return timeHour + ":" + timeMin + ":" + timeSec;
+	else
+		return timeMin + ":" + timeSec;
+}
+
 function handlePlaylist() {
 
 	this.processInput = function processInput(targetURL) {
@@ -76,6 +95,55 @@ function handlePlaylist() {
 	}
 }
 
-function handlePlayer(){
-	
+function handlePlayer() {
+	this.speed = function speed(value) {
+		var vlc = getVLC("vlc");
+		if (vlc) {
+			vlc.input.rate *= value;
+			$("#speed").text("Speed : " + vlc.input.rate + "x");
+		}
+	}
+	this.audioChannel = function audioChannel(value) {
+		var vlc = getVLC("vlc");
+		if (vlc) {
+			vlc.audio.channel = parseInt(value);
+		}
+	}
+	this.audioTrack = function audioTrack(value) {
+		var vlc = getVLC("vlc");
+		if (vlc) {
+			vlc.audio.track += value;
+			$("#track").text("Track # : " + vlc.audio.track + "  " + vlc.audio.description(vlc.audio.track));
+		}
+	}
+	this.crop = function crop(value) {
+		var vlc = getVLC("vlc");
+		if (vlc) {
+			vlc.video.aspectRatio = value;
+			$("#crop").text("Aspect Ratio : " + value);
+		}
+	}
+	this.subtitle = function subtitle(value) {
+		var vlc = getVLC("vlc");
+		if (vlc) {
+			vlc.subtitle.track += value;
+			$("#subtitle").text("Subtitle # : " + vlc.subtitle.track + " " + vlc.subtitle.description(vlc.subtitle.track));
+		}
+	}
+	this.updateInfo = function updateInfo() {
+		var vlc = getVLC("vlc");
+		if (vlc) {
+			if (vlc.playlist.isPlaying) {
+				$("#info").text(formatTime(vlc.input.time) + " / " + formatTime(vlc.input.length));
+			} else
+				$("#info").text("-:--:-- / -:--:--")
+		}
+		info = setTimeout(function() {
+			player.updateInfo();
+		}, 500);
+	}
 }
+
+var info = setTimeout(function() {
+	player.updateInfo();
+}, 500);

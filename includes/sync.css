@@ -45,7 +45,8 @@
 	margin: 34px 0 0;
 }
 .tabContents {
-	padding: 20px
+	padding: 20px 100px;
+	height: 350px;
 }
 .tabContents h1 {
 	font: normal 24px/1.1em Georgia, "Times New Roman", Times, serif;
@@ -53,4 +54,10 @@
 }
 .tabContents p {
 	padding: 0 0 10px;
+}
+.floatLeft {
+	float: left;
+}
+.floatRight {
+	float: right;
 }
