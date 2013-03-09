@@ -94,6 +94,7 @@ var Logger = (function()
                                                         "margin:0; " +
                                                         "padding:0; " +
                                                         "position:fixed; " +
+                                                        "z-index:1000; " +
                                                         "left:0; ");
                 this.containerDiv.style.bottom = "" + -this.logHeight + "px";   // hide it initially
 

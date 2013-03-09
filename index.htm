@@ -8,16 +8,19 @@
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 		<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css"/>
-		<script src="includes/main.js"></script>
-		<script src="includes/sync.js"></script>
-		<script src="includes/jquery.js"></script>
-		<script src="includes/Logger.js"></script>
+		<script type="text/javascript" src="includes/main.js"></script>
+		<script type="text/javascript" src="server/serverdate/ServerDate.php"></script>
+		<script type="text/javascript" src="includes/sync.js"></script>
+		<script type="text/javascript" src="includes/jquery.js"></script>
+		<script type="text/javascript" src="includes/Logger.js"></script>
 	</head>
 	<body id="body" onkeypress="keys()">
 		<input type="text" id="targetURL"/>
 		<input type="submit" value="Add to Playlist" onclick="playlist.processInput(document.getElementById('targetURL').value);document.getElementById('targetURL').value=''"/>
 		<input type="submit" value="Clear Playlist!" onclick="playlist.clear(-1)"/>
-		<div id="playlist"></div>
+		<div id="playlistbox">
+			<ol id="playlist"></ol>
+		</div>
 		<div id="player" onkeypress="keys()">
 			<object onkeypress="keys()" classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="560" height="385" id="vlc" events="True">
 				<param name="MRL" value=""/>
@@ -41,7 +44,7 @@
 					<a class="active" href="#tab1">Playback Settings</a>
 				</li>
 				<li>
-					<a href="#tab2">Div Two</a>
+					<a href="#tab2">Sync Settings</a>
 				</li>
 				<li>
 					<a href="#tab3">Div Three</a>
@@ -119,12 +122,15 @@
 				</div>
 				<!-- //tab1 -->
 				<div id="tab2" class="tabContents">
-					<h1>Div Two</h1>
+					<h1>Sync Setup</h1>
 					<p>
-						Sed gravida velit ut lorem dictum vitae venenatis dolor faucibus. In vehicula malesuada mi, vel semper sem porta in. Mauris suscipit lorem eget justo congue semper.
+						Client Settings<br />
+						<input type="text" id="clientKey" value="" maxlength="5" /> <input type="button" id="clientConfirm" value=" Confirm " onclick="sync.check(document.getElementById('clientKey').value);"/>
 					</p>
 					<p>
-						Donec et purus eget elit tristique consequat. Integer ut orci eu augue tristique viverra nec vitae odio. Nulla sem nibh, posuere quis condimentum vitae, posuere sit amet lectus. Morbi euismod tincidunt mauris ut scelerisque.
+						Host Settings<br />
+						<input type="button" value=" Become Host " onclick="sync.host()" /><br />
+						Host Key : <textarea readonly="true" id="hostID"></textarea>
 					</p>
 				</div>
 				<!-- //tab2 -->

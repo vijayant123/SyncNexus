@@ -52,9 +52,10 @@ function handlePlaylist() {
 			var options = [":rtsp-tcp"];
 			var itemID = vlc.playlist.add(targetURL, "", options);
 			vlc.playlist.playItem(itemID);
-			currItemID = itemID;
 			var itemName = targetURL;
-			var html = '<div class="playlistItem" onclick="playlist.togglePlayback(' + itemID + ')" title="' + itemName.substring(8) + '" id="playlistItem_' + itemID + '" ondblclik="playlist.clear(' + itemID + ')">' + itemName.substring(8).substring(itemName.length - 53) + '<br /><br /></div>';
+			itemID = random(4);
+			currItemID = itemID;
+			var html = '<li class="playlistItem" onclick="playlist.togglePlayback(' + itemID + ')" title="' + itemName.substring(8) + '" id="playlistItem_' + itemID + '" ondblclick="playlist.clear(' + itemID + ')">' + itemName.substring(8).substring(itemName.length - 60) + '<br /><br /></li>';
 			handle.innerHTML += (html);
 		}
 	}
@@ -68,7 +69,7 @@ function handlePlaylist() {
 				else
 					vlc.playlist.play();
 			else {
-				vlc.playlist.playItem(itemID);
+				vlc.playlist.playItem($("#playlistItem_" + itemID).index());
 				currItemID = itemID;
 			}
 		}
@@ -81,13 +82,12 @@ function handlePlaylist() {
 			if (vlc.playlist.items.count > 0) {
 				vlc.playlist.stop();
 				if (itemID == -1) {
-					vlc.playlist.stop();
 					vlc.playlist.items.clear();
 					handle.innerHTML = '';
 					return true;
 				}
-				vlc.playlist.items.remove(itemID);
-				handle.removeChild(document.getElementById("playlistItem_" + itemID));
+				vlc.playlist.items.remove($("#playlistItem_" + itemID).index());
+				$("#playlistItem_" + itemID).remove();
 			} else
 				alert("Playlist is already empty !!!");
 
@@ -144,6 +144,10 @@ function handlePlayer() {
 	}
 }
 
-var info = setTimeout(function() {
-	player.updateInfo();
-}, 500);
+window.onload = function() {
+	Logger.show();
+	log("Logger initialized.");	
+	var info = setTimeout(function() {
+		player.updateInfo();
+	}, 500);
+};

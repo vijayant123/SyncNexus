@@ -9,7 +9,7 @@ var iteration;
 var timer;
 var timeInterval;
 var client = 0;
-var host = 0;
+var sync = new handleSync;
 
 function requester() {
 	url = 'syncGET.php';
@@ -65,8 +65,9 @@ function executioner(seek) {
 	}
 }
 
-function randomString(length) {
-	chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+function random(length) {
+	chars = '123456789';
+	//abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 	var result = '';
 	for (var i = length; i > 0; --i)
 		result += chars[Math.round(Math.random() * (chars.length - 1))];
@@ -80,4 +81,46 @@ function setDisplay(divID, flag) {
 	} else {
 		element.style.display = "none";
 	}
+}
+
+function browse(url, callback) {
+	$.ajax({
+		url : url,
+		success : function(data, status) {
+			log(data);
+			callback(data);
+			log("Completed loading : " + url + " Status : " + status);
+		},
+		error : function(a, b, status) {
+			log("Error loading : " + status);
+		}
+	});
+}
+
+function handleSync() {
+	this.check = function check(key) {
+		$("#clientConfirm").val(" Confirming... ");
+		a = './server/check.php?key=' + key;
+		browse(a, sync.checkConfirm);
 	}
+	this.checkConfirm = function(data) {
+		if (data == 1) {
+			$("#clientConfirm").val(" Confirmed ").attr('disabled', 'true');
+			$("#clientKey").attr('readonly', 'true');
+		} else {
+			$("#clientConfirm").val(" " + data + " ");
+		}
+	}
+	this.host = function host() {
+		$("#hostID").text("Loading...");
+		browse('./server/host.php', sync.makeHost);
+	}
+	this.makeHost = function makeHost(data) {
+		if (data.length < 5) {
+			$("#hostID").text("Some Error Occured. Try Again.");
+			return true;
+		}
+		$("#hostID").text(data);
+		$('input[onclick="sync.host()"]').attr('disabled', 'true')
+	}
+}
