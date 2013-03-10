@@ -44,10 +44,10 @@
 					<a class="active" href="#tab1">Playback Settings</a>
 				</li>
 				<li>
-					<a href="#tab2">Sync Settings</a>
+					<a href="#tab2">Join a Broadcast</a>
 				</li>
 				<li>
-					<a href="#tab3">Div Three</a>
+					<a href="#tab3">Host a Broadcast</a>
 				</li>
 			</ul>
 			<!-- //Tab buttons -->
@@ -122,25 +122,47 @@
 				</div>
 				<!-- //tab1 -->
 				<div id="tab2" class="tabContents">
-					<h1>Sync Setup</h1>
+					<h1>Client</h1>
 					<p>
-						Client Settings<br />
-						<input type="text" id="clientKey" value="" maxlength="5" /> <input type="button" id="clientConfirm" value=" Confirm " onclick="sync.check(document.getElementById('clientKey').value);"/>
+						Client Settings
+						<br />
+						<input type="text" id="clientKey" value="" maxlength="5" />
+						<input type="button" id="clientConfirm" value=" Confirm " onclick="sync.check(document.getElementById('clientKey').value);"/>
 					</p>
 					<p>
-						Host Settings<br />
-						<input type="button" value=" Become Host " onclick="sync.host()" /><br />
-						Host Key : <textarea readonly="true" id="hostID"></textarea>
+						Select Sync frequency :
+						<br />
+						<select id="clientFrequency" readonly disabled="disabled" onchange="sync.setClientFrequency(this.value);">
+							<option value=0 selected="selected"> Select a time-interval </option>
+							<option value=5000> 5 Seconds </option>
+							<option value=30000> 30 Seconds </option>
+							<option value=60000> 60 Seconds </option>
+							<option value=90000> 90 Seconds </option>
+							<option value=120000> 120 Seconds </option>
+						</select>
 					</p>
 				</div>
 				<!-- //tab2 -->
 				<div id="tab3" class="tabContents">
-					<h1>Div Three</h1>
+					<h1>Host</h1>
 					<p>
-						Sed gravida velit ut lorem dictum vitae venenatis dolor faucibus. In vehicula malesuada mi, vel semper sem porta in. Mauris suscipit lorem eget justo congue semper.
+						Host Settings
+						<br />
+						<input type="button" value=" Become Host " onclick="sync.host()" />
+						<br />
+						Host Key : 						<textarea readonly="true" id="hostKey"></textarea>
 					</p>
 					<p>
-						Donec et purus eget elit tristique consequat. Integer ut orci eu augue tristique viverra nec vitae odio. Nulla sem nibh, posuere quis condimentum vitae, posuere sit amet lectus. Morbi euismod tincidunt mauris ut scelerisque.
+						Select Sync frequency :
+						<br />
+						<select id="hostFrequency" disabled="disabled" readonly onchange="sync.setHostFrequency(this.value);">
+							<option value=0 selected="true"> Select a time-interval </option>
+							<option value=10000> 10 Seconds </option>
+							<option value=30000> 30 Seconds </option>
+							<option value=60000> 60 Seconds </option>
+							<option value=90000> 90 Seconds </option>
+							<option value=120000> 120 Seconds </option>
+						</select>
 					</p>
 				</div>
 				<!-- //tab3 -->

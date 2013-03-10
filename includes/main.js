@@ -146,7 +146,7 @@ function handlePlayer() {
 
 window.onload = function() {
 	Logger.show();
-	log("Logger initialized.");	
+	log("Logger initialized.");
 	var info = setTimeout(function() {
 		player.updateInfo();
 	}, 500);
