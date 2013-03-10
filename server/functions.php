@@ -6,7 +6,6 @@
  * @uses Functions t be used in the site
  */
 
-$tempPath = './temp/';
 
 function random($length) {
 	$random = "";
