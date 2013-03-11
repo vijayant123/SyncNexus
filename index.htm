@@ -13,16 +13,17 @@
 		<script type="text/javascript" src="includes/sync.js"></script>
 		<script type="text/javascript" src="includes/jquery.js"></script>
 		<script type="text/javascript" src="includes/Logger.js"></script>
+		<script type="text/javascript" src="includes/keypress/keypress.js"></script>
 	</head>
-	<body id="body" onkeypress="keys()">
+	<body id="body">
 		<input type="text" id="targetURL"/>
 		<input type="submit" value="Add to Playlist" onclick="playlist.processInput(document.getElementById('targetURL').value);document.getElementById('targetURL').value=''"/>
 		<input type="submit" value="Clear Playlist!" onclick="playlist.clear(-1)"/>
 		<div id="playlistbox">
 			<ol id="playlist"></ol>
 		</div>
-		<div id="player" onkeypress="keys()">
-			<object onkeypress="keys()" classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="560" height="385" id="vlc" events="True">
+		<div id="player">
+			<object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="560" height="385" id="vlc" events="True">
 				<param name="MRL" value=""/>
 				<param name="ShowDisplay" value="True"/>
 				<param name="AutoLoop" value="True"/>
@@ -32,7 +33,7 @@
 				<param name="toolbar" value="true"/>
 				<param name="StartTime" value="0"/>
 				<param name="mute" value="false"/>
-				<embed onkeypress="keys()" pluginspage="http://www.videolan.org" type="application/x-vlc-plugin" version="VideoLAN.VLCPlugin.2" width="560" height="385" toolbar="true" mute "false" text="Waiting for video" name="vlc">
+				<embed pluginspage="http://www.videolan.org" type="application/x-vlc-plugin" version="VideoLAN.VLCPlugin.2" width="560" height="385" toolbar="true" mute "false" text="Waiting for video" name="vlc">
 				</embed>
 			</object>
 			<span id="info"></span>

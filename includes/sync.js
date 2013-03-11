@@ -13,63 +13,8 @@
 
 var sync = new handleSync;
 
-function requester() {
-	url = 'syncGET.php';
-	$.ajax({
-		type : 'POST', // type of request either Get or Post
-		url : url, // Url of the page where to post data and receive response
-		// data to be post
-		success : function(data) {
-
-			handler(data);
-		} //function to be called on successful reply from server
-	});
-}
-
-function sendRequest(interval) {
-	iteration = setInterval(function() {
-		requester()
-	}, interval);
-}
-
-function syncer(interval) {
-	if (interval == 0) {
-		alert('Please select the sync time.');
-		return false;
-	}
-	alert('Syncing playback every ' + interval / 1000 + ' seconds.')
-	iteration = clearInterval(iteration);
-	sendRequest(interval);
-	timeInterval = interval;
-}
-
-function handler(data) {
-	var a = data.split(':');
-	var targetTime = parseInt(a[0]);
-	var target = parseInt(a[1]);
-	var time = Math.round((new Date()).getTime() / 1000);
-	var timeOnTarget = (targetTime - time) * 1000;
-	console.log(timeOnTarget);
-	//	alert(timeOnTarget)
-	if (timeOnTarget > 0 && timeOnTarget <= timeInterval) {
-		timer = setTimeout(function() {
-			executioner(target);
-			console.log('target' + target);
-		}, timeOnTarget);
-	}
-}
-
-function executioner1(seek) {
-	var vlc = getVLC('vlc');
-	if (vlc) {
-		vlc.input.time = seek;
-		timer = clearTimeout(timer);
-	}
-}
-
 function random(length) {
 	chars = '123456789';
-	//abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 	var result = '';
 	for (var i = length; i > 0; --i)
 		result += chars[Math.round(Math.random() * (chars.length - 1))];
@@ -206,7 +151,7 @@ function handleSync() {
 		}
 	}
 	this.syncer = function syncer(data) {
-		if(data.length < 10){
+		if (data.length < 10) {
 			return false;
 		}
 		sync.syncIteration = clearTimeout(sync.syncIteration);
@@ -220,7 +165,7 @@ function handleSync() {
 		if (sync.timeOnTarget > 0 && sync.timeOnTarget <= sync.interval) {
 			sync.syncIteration = setTimeout(function() {
 				sync.executioner(sync.vlcPos, sync.vlcState);
-			//	log('target : ' + sync.vlcPos);
+				//	log('target : ' + sync.vlcPos);
 			}, sync.timeOnTarget);
 		}
 	}

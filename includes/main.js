@@ -2,6 +2,7 @@
 
 var playlist = new handlePlaylist;
 var player = new handlePlayer;
+var keys = new handleKeys;
 var currItemID = -1;
 
 function getVLC(name) {
@@ -14,6 +15,22 @@ function getVLC(name) {
 	} else// if (navigator.appName.indexOf("Microsoft Internet")!=-1)
 	{
 		return document.getElementById(name);
+	}
+}
+
+function registerVLCEvent(event, handler) {
+	var vlc = getVLC("vlc");
+	if (vlc) {
+		if (vlc.attachEvent) {
+			// Microsoft
+			vlc.attachEvent(event, handler);
+		} else if (vlc.addEventListener) {
+			// Mozilla: DOM level 2
+			vlc.addEventListener(event, handler, false);
+		} else {
+			// DOM level 0
+			vlc["on" + event] = handler;
+		}
 	}
 }
 
@@ -150,4 +167,156 @@ window.onload = function() {
 	var info = setTimeout(function() {
 		player.updateInfo();
 	}, 500);
-};
+	keypress.register_many(keys.combos);
+	registerVLCEvent('MediaPlayerPaused', function() {
+		if (!($("#hostKey").val().length < 5) && sync.interval > 1000) {
+			sync.sendBroadcast();
+		}
+	});
+	registerVLCEvent('MediaPlayerPlaying', function() {
+		if (!($("#hostKey").val().length < 5) && sync.interval > 1000) {
+			sync.sendBroadcast();
+		}
+	});
+}
+function handleKeys() {
+	this.combos = [{
+		'keys' : 'right',
+		'is_exclusive' : true,
+		'prevent_default' : true,
+		'on_keyup' : function() {
+			keys.seek(60000);
+		}
+	}, {
+		'keys' : 'left',
+		'is_exclusive' : true,
+		'prevent_default' : true,
+		'on_keyup' : function() {
+			keys.seek(-60000);
+		}
+	}, {
+		'keys' : 'up',
+		'is_exclusive' : true,
+		'prevent_default' : true,
+		'on_keyup' : function() {
+			keys.volume(10);
+		}
+	}, {
+		'keys' : 'down',
+		'is_exclusive' : true,
+		'prevent_default' : true,
+		'on_keyup' : function() {
+			keys.volume(-10);
+		}
+	}, {
+		'keys' : 'alt right',
+		'is_exclusive' : true,
+		'prevent_default' : true,
+		'on_keyup' : function() {
+			keys.seek(10000);
+		}
+	}, {
+		'keys' : 'alt left',
+		'is_exclusive' : true,
+		'prevent_default' : true,
+		'on_keyup' : function() {
+			keys.seek(-10000);
+		}
+	}, {
+		'keys' : 'alt up',
+		'is_exclusive' : true,
+		'prevent_default' : true,
+		'on_keyup' : function() {
+			keys.volume(5);
+		}
+	}, {
+		'keys' : 'alt down',
+		'is_exclusive' : true,
+		'prevent_default' : true,
+		'on_keyup' : function() {
+			keys.volume(-5);
+		}
+	}, {
+		'keys' : 'space',
+		'is_exclusive' : true,
+		'prevent_default' : true,
+		'on_keyup' : function() {
+			keys.togglePause();
+		}
+	}, {
+		'keys' : 'm',
+		'is_exclusive' : true,
+		'prevent_default' : true,
+		'on_keyup' : function() {
+			keys.toggleMute();
+		}
+	}, {
+		'keys' : 'n',
+		'is_exclusive' : true,
+		'prevent_default' : true,
+		'on_keyup' : function() {
+			keys.play(1);
+		}
+	}, {
+		'keys' : 'p',
+		'is_exclusive' : true,
+		'prevent_default' : true,
+		'on_keyup' : function() {
+			keys.play(-1);
+		}
+	}, {
+		'keys' : 'f',
+		'is_exclusive' : true,
+		'prevent_default' : true,
+		'on_keyup' : function() {
+			keys.toggleFullscreen();
+		}
+	}, {
+		'keys' : 'alt',
+		'is_exclusive' : true,
+		'prevent_default' : true,
+		'on_keyup' : function() {
+			return true;
+		}
+	}];
+	this.volume = function volume(value) {
+		var vlc = getVLC("vlc");
+		if (vlc) {
+			vlc.audio.volume += value;
+		}
+	}
+	this.seek = function seek(value) {
+		var vlc = getVLC("vlc");
+		if (vlc) {
+			vlc.input.time += value;
+		}
+	}
+	this.togglePause = function togglePause() {
+		var vlc = getVLC("vlc");
+		if (vlc) {
+			vlc.playlist.togglePause();
+		}
+	}
+	this.toggleMute = function toggleMute() {
+		var vlc = getVLC("vlc");
+		if (vlc) {
+			vlc.audio.toggleMute();
+		}
+	}
+	this.play = function play(value) {
+		var vlc = getVLC("vlc");
+		if (vlc) {
+			if (value == 1)
+				vlc.playlist.next();
+			else
+				vlc.playlist.prev();
+		}
+	}
+	this.toggleFullscreen = function toggleFullscreen() {
+		var vlc = getVLC("vlc");
+		if (vlc) {
+			vlc.video.toggleFullscreen();
+		}
+	}
+}
+

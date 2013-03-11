@@ -59,7 +59,7 @@ var Logger = (function()
         tabDiv: null,
         logDiv: null,
         visible: false,
-        logHeight: 215, // 204 + 2*padding + border-top
+        logHeight: 115, // 204 + 2*padding + border-top old value was : 215px
         tabHeight: 26,  // 20 + padding-top + border-top
         // for animation
         animTime: 0,
