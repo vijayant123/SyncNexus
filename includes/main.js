@@ -278,6 +278,20 @@ function handleKeys() {
 		'on_keyup' : function() {
 			return true;
 		}
+	}, {
+		'keys' : 'num_add',
+		'is_exclusive' : true,
+		'prevent_default' : true,
+		'on_keyup' : function() {
+			player.speed(2.0);
+		}
+	}, {
+		'keys' : 'num_subtract',
+		'is_exclusive' : true,
+		'prevent_default' : true,
+		'on_keyup' : function() {
+			player.speed(0.5);
+		}
 	}];
 	this.volume = function volume(value) {
 		var vlc = getVLC("vlc");
